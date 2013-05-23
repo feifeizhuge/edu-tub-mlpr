@@ -18,11 +18,11 @@ Write your implementations in the given functions stubs!
 from __future__ import print_function
 from __future__ import division
 import numpy as np
-from scipy.spatial.distance import cdist # fast distance matrices
 from scipy.cluster.hierarchy import dendrogram # you can use this
 import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 import warnings;
+import time;
 
 warnings.filterwarnings('ignore', 'invalid value encountered in add');
 
@@ -56,14 +56,15 @@ def kmeans(X, k, max_iter=100):
     mu = X[:,clusterIndices].copy();
     r = np.ones(n)*-1;
     
+    start = time.clock();
     for i in range(max_iter):
+        # rows are indexed by the data points and columns by the cluster centers
         distance = np.sqrt(((X[:,:,np.newaxis] - mu[:,np.newaxis,:])**2).sum(axis=0));
         rold = r;
+        # find in each row the index of minimal distance
         r = np.argmin(distance,axis=1);
         
-#         plt.scatter(X[0,:],X[1,:],23,r);
-#         plt.show();
-        
+        # calculate new cluster centers by averaging the assigned points
         for j in range(k):
             mu[:,j] = X[:,r==j].sum(axis=1)/(r==j).sum();
          
@@ -77,23 +78,27 @@ def kmeans(X, k, max_iter=100):
         print('Iteration:' + str(i) + ' #changes:' + str(numChanges) + ' loss function value:' + str(lossValue));
         
     
-    return mu,r;
+    return mu,r, i,time.clock()-start;
 
 def kmeans_crit(X, r):
     """ Computes k-means criterion
     
     Input: 
-    X: (d x n) data matrix with each datapoint in one column
+    X: (d x n) data matrix with each data point in one column
     r: assignment vector
     
     Output:
-    value: scalar for sum of euclidean distances to cluster centers
+    value: scalar for sum of Euclidean distances to cluster centers
     """
     k = max(r)+1;
     result = 0;
     for j in range(k):
         if (r==j).sum() > 0:
+            # calculate cluster center based on point assignment (mean of
+            # all points which are assigned to the same cluster)
             m = X[:,r==j].sum(axis=1)/(r==j).sum();
+            
+            # sum up the distance of the data points to their cluster centers
             result += np.sqrt(((X[:,r==j]-m[:,np.newaxis])**2).sum(axis=0)).sum();
     
     return result;
@@ -103,12 +108,12 @@ def kmeans_agglo(X, r):
     """ Performs agglomerative clustering with k-means criterion
 
     Input:
-    X: (d x n) data matrix with each datapoint in one column
+    X: (d x n) data matrix, data point is represented by a column vector
     r: assignment vector
 
     Output:
-    R: (k-1) x n matrix that contains cluster memberships before each step
-    kmloss: vector with loss after each step
+    R: k x n matrix that contains cluster memberships before each step
+    kmloss: k vector with loss after each step
     mergeidx: (k-1) x 2 matrix that contains merge idx for each step
     
     Description:
@@ -118,13 +123,14 @@ def kmeans_agglo(X, r):
         Till Rohrmann, till.rohrmann@campus.tu-berlin.de
     """
 
-
     n = X.shape[1];
     k = max(r)+1;
     R = np.zeros((k,n),dtype='int');
     kmloss = np.zeros(k);
     mergeidx = np.zeros((k-1,2));
     
+    # array which is used to map the used cluster indices to the range
+    # 0...(k-1). After each merge operation, the range is decreased by one
     mapping = np.arange(k);
     
     R[0,:] = r;
@@ -136,6 +142,7 @@ def kmeans_agglo(X, r):
         minSet1 = -1;
         minSet2 = -2;
         
+        # find 2 cluster such that merging them has the minimal overall error
         for i in range(k-idx):
             for j in range(i+1,k-idx+1):
                 tempR = R[idx-1,:].copy();
@@ -150,9 +157,15 @@ def kmeans_agglo(X, r):
         kmloss[idx] = minError;
         mergeidx[idx-1,:] = (mapping[minSet1], mapping[minSet2]);
         R[idx,:] = R[idx-1,:].copy();
+        # merging cluster minSet1 and minSet2 and giving it the new index k + idx -1
+        # This is in accordance with the implementation of the function scipy.cluster.hierarchy.linkage
         R[idx,R[idx-1,:]==mapping[minSet2]] = k+idx-1;
         R[idx,R[idx-1,:]==mapping[minSet1]] = k+idx-1;
+        
+        # set the merged set mapping (with smaller index) to the newly introduced index
         mapping[minSet1] = k+idx-1;
+        # overwrite the second merged set mapping with the last mapped value, which would
+        # otherwise fall out of the range in the next iteration.
         mapping[minSet2] = mapping[k-idx];
         
     return R, kmloss, mergeidx;
@@ -161,12 +174,16 @@ def agglo_dendro(kmloss, mergeidx):
     """ Plots dendrogram for agglomerative clustering
 
     Input:
-    kmloss: vector with loss after each step
+    kmloss: k vector with loss after each step
     mergeidx: (k-1) x 2 matrix that contains merge idx for each step
+    
+    Author:
+        Till Rohrmann, till.rohrmann@campus.tu-berlin.de
     """
     Z = np.hstack((mergeidx,kmloss[1:,np.newaxis],np.zeros((mergeidx.shape[0],1))));
     dendrogram(Z);
     d = max(Z[:,2]) - min(Z[:,2]);
+    # set the y range so that the interesting region is highlighted
     plt.ylim([max(0,min(Z[:,2])-0.01*d), max(Z[:,2])+0.01*d]);
     plt.show(block=False);
     
@@ -174,7 +191,7 @@ def log_norm_pdf(X, mu, C):
     """ Computes log probability density function for multivariate gaussian
 
     Input:
-    X: (d x n) data matrix with each datapoint in one column
+    X: (d x n) data matrix with each data point in one column
     mu: vector for center
     C: covariance matrix
 
@@ -186,19 +203,13 @@ def log_norm_pdf(X, mu, C):
     """
     if(X.ndim == 1):
         d = X.shape[0]
-        n = 1
     else:
         d = X.shape[0];
-        n = X.shape[1];
     centeredM = X - mu[:,np.newaxis];
     
     _,logDet = np.linalg.slogdet(C);
-    iC = np.linalg.inv(C);
     
-    result = np.zeros(n);
-    
-    for i in range(n):
-        result[i] = (-d/2)*(np.log(2*np.pi))+(-1./2)*logDet+(-1./2*np.dot(centeredM[:,i],np.dot(iC,centeredM[:,i])));
+    result = (-d/2)*(np.log(2*np.pi))+(-1./2)*logDet+(-1./2*np.sum(centeredM*np.linalg.solve(C,centeredM),0));
     
     return result;
     
@@ -206,7 +217,7 @@ def norm_pdf(X, mu, C):
     """ Computes probability density function for multivariate gaussian
 
     Input:
-    X: (d x n) data matrix with each datapoint in one column
+    X: (d x n) data matrix with each data point in one column
     mu: vector for center
     C: covariance matrix
 
@@ -218,18 +229,12 @@ def norm_pdf(X, mu, C):
     """
     
     d = X.shape[0];
-    n = X.shape[1];
     centeredM = X - mu[:,np.newaxis];
     
     determinant = np.linalg.det(C);
-    iC = np.linalg.inv(C);
      
-    result = np.zeros(n);
-     
-    # np.diag((((2*np.pi)**(-d/2))*(determinant**(-1./2))*np.exp(-1./2*(np.dot(centeredM.T,np.dot(iC,centeredM))))));
-    for i in range(n):
-        result[i] = (2*np.pi)**(-d/2)*determinant**(-1./2)*np.exp(-1./2*np.dot(centeredM[:,i],np.dot(iC,centeredM[:,i])))
-        
+    result = (2*np.pi)**(-d/2)*determinant**(-1./2)*np.exp(-1./2*np.sum(centeredM*np.linalg.solve(C,centeredM),0));
+      
     return result;
 
 def log_likelihood(data, pi, mu, sigma):
@@ -246,6 +251,9 @@ def log_likelihood(data, pi, mu, sigma):
             
         Output:
             Log likelihood of the parameters given the data points.
+            
+        Author:
+            Till Rohrmann, till.rohrmann@campus.tu-berlin.de
     '''
     k = mu.shape[1];
     n = data.shape[1];
@@ -261,7 +269,8 @@ def log_likelihood(data, pi, mu, sigma):
 
 def log_log_likelihood(data, pi, mu, sigma):
     ''' This function calculates the log likelihood of the data given
-        a mixture Gaussian distribution.
+        a mixture Gaussian distribution. The calculation is performed in
+        the log space.
         
         Input:
             data : (d x n) data matrix with each datapoint in one column
@@ -273,6 +282,9 @@ def log_log_likelihood(data, pi, mu, sigma):
             
         Output:
             Log likelihood of the parameters given the data points.
+            
+        Author:
+            Till Rohrmann, till.rohrmann@campus.tu-berlin.de
     '''
     k = mu.shape[1];
     n = data.shape[1];
@@ -280,16 +292,32 @@ def log_log_likelihood(data, pi, mu, sigma):
     temp = np.ones(n)*-np.Inf; 
     
     for i in range(k):
-            buffer = log_norm_pdf(data,mu[:,i],sigma[i]);
-            temp = log_sum(temp,np.log(pi[i])+buffer);
-#             for j in range(n):
-#                 temp[j] = log_sum(temp[j],np.log(pi[i]) + buffer[j]);
+            # using the log functions in order to stay in the log space
+            buf = log_norm_pdf(data,mu[:,i],sigma[i]);
+            # Addition of two log values in the log space
+            temp = log_sum(temp,np.log(pi[i])+buf);
             
     logL = temp.sum();
     
     return logL;
 
 def log_sum(a,b):
+    ''' This function performs an addition of two logarithmic values in the log space.
+        Given two logarithmic values log(x) and log(y) the function computes the value
+        log(x+y) in a numerically stable manner. Assuming x > y then the formula is derived
+        the following way:
+            log(x+y) = log(x) + log(1+y/x) = log(x) + log(1 + exp(log(y)-log(x)))
+        
+        Input:
+            a : 1st operand in logarithmic space
+            b : 2nd operand in logarithmic space
+            
+        Output:
+            log(exp(a)+exp(b))
+            
+        Author:
+            Till Rohrmann, till.rohrman@campus.tu-berlin.de
+    '''
     assert np.ndim(a) == np.ndim(b), 'Arguments must have the same dimensions.'
     if(np.ndim(a) == 0 and np.ndim(b) == 0):
         if a == -np.Inf:
@@ -301,19 +329,21 @@ def log_sum(a,b):
         else:
             return b+np.log(1+np.exp(a-b));
     else:
+        # computation for vectors is performed element-wise
         condlist = [a== -np.Inf, b==-np.Inf, a>b, b>=a];
         choicelist = [b, a, a+np.log(1+np.exp(b-a)), b+np.log(1+np.exp(a-b))];   
         return np.select(condlist,choicelist);
 
 def log_em_mog(X, k, max_iter=100, init_kmeans=False, eps=1e-3):
-    """ Performs EM Mixture of Gaussians in logarithmic space
+    """ Performs EM Mixture of Gaussians in logarithmic space in order
+        avoid underflows while calculating with very little probabilities.
 
     Input:
-    X: (d x n) data matrix with each datapoint in one column
-    k: number of clusters
-    max_iter: maximum number of iterations
-    init_kmeans: whether kmeans should be used for initialisation
-    eps: when log likelihood difference is smaller than eps, terminate loop
+        X: (d x n) data matrix with each datapoint in one column
+        k: number of clusters
+        max_iter: maximum number of iterations
+        init_kmeans: whether kmeans should be used for initialisation
+        eps: when log likelihood difference is smaller than eps, terminate loop
 
     Output:
     pi: 1 x k matrix of priors
@@ -329,38 +359,44 @@ def log_em_mog(X, k, max_iter=100, init_kmeans=False, eps=1e-3):
     covariances = np.zeros((k,d,d));
     gammas = np.zeros((n,k));
     logL = -np.Inf;
+    # regularization constant
     delta = 1e-5
     
+    # initialize covariance matrices with the identity
     for i in range(k):
         covariances[i] = np.identity(d);
     
     if(init_kmeans == True):
-        mu, _ = kmeans(X, k, max_iter);
+        mu, _,_,_ = kmeans(X, k, max_iter);
     else:
         candidateIndices = np.random.permutation(np.arange(n))[:k];
         mu = X[:,candidateIndices];
         
+    start = time.clock();
+    
     for counter in range(max_iter):
      
         sGamma = np.ones(n)*-np.Inf;
         
+        # calculate for every Gaussian the probability that the data points belong
+        # to its cluster
         for i in range(k):
             gammas[:,i] = np.log(pi[i]) + log_norm_pdf(X,mu[:,i],covariances[i]);
             sGamma = log_sum(sGamma,gammas[:,i]);
-#             for j in range(n):
-#                 sGamma[j] = log_sum(sGamma[j],gammas[j,i]);
-            
+        
+        # normalize the probabilities    
         for i in range(k):
             gammas[:,i] = np.exp(gammas[:,i]-sGamma);
             
         nk = gammas.sum(axis=0);
         pi = nk/n;
-        
-            
+          
         for i in range(k):
+            # calculate the new cluster centers
             mu[:,i] = np.dot(X,gammas[:,i])/nk[i];
         
             wX = (X-mu[:,i,np.newaxis]) * np.sqrt(gammas[:,i]);
+            # estimating the new covariance matrix with regularization
             covariances[i] = np.dot(wX,wX.T)/nk[i] + np.identity(d)*delta
             
         oldLogL = logL;
@@ -372,7 +408,7 @@ def log_em_mog(X, k, max_iter=100, init_kmeans=False, eps=1e-3):
         if(logL-oldLogL < eps):
             break;
         
-    return pi, mu, covariances
+    return pi, mu, covariances, counter, time.clock() - start;
 
 def em_mog(X, k, max_iter=100, init_kmeans=False, eps=1e-3):
     """ Performs EM Mixture of Gaussians
@@ -398,25 +434,32 @@ def em_mog(X, k, max_iter=100, init_kmeans=False, eps=1e-3):
     covariances = np.zeros((k,d,d));
     gammas = np.zeros((n,k));
     logL = -np.Inf;
+    # regularization constant
     delta = 1e-5
     
+    # covariance matrices of the Gaussians is initialized with the identity matrix
     for i in range(k):
         covariances[i] = np.identity(d);
     
     if(init_kmeans == True):
-        mu, _ = kmeans(X, k, max_iter);
+        mu, _, _, _ = kmeans(X, k, max_iter);
     else:
         candidateIndices = np.random.permutation(np.arange(n))[:k];
         mu = X[:,candidateIndices];
         
+    start = time.clock();
+    
     for counter in range(max_iter):
      
         sGamma = np.zeros(n);
         
+        # calculate for each cluster center the probability that a datapoint
+        # belongs to it
         for i in range(k):
             gammas[:,i] = pi[i]*norm_pdf(X,mu[:,i],covariances[i]);
             sGamma += gammas[:,i];
-            
+        
+        # normalize probability
         for i in range(k):
             gammas[:,i] /= sGamma;
             
@@ -425,9 +468,11 @@ def em_mog(X, k, max_iter=100, init_kmeans=False, eps=1e-3):
         
             
         for i in range(k):
+            # calculate new cluster centers
             mu[:,i] = np.dot(X,gammas[:,i])/nk[i];
         
             wX = (X-mu[:,i,np.newaxis]) * np.sqrt(gammas[:,i]);
+            # estimate the new covariance matrices with regularization
             covariances[i] = np.dot(wX,wX.T)/nk[i] + np.identity(d)*delta
             
         oldLogL = logL;
@@ -439,16 +484,32 @@ def em_mog(X, k, max_iter=100, init_kmeans=False, eps=1e-3):
         if(logL-oldLogL < eps):
             break;
         
-    return pi, mu, covariances;
+    return pi, mu, covariances, counter, time.clock()-start;
         
 def plot_ellipse(mean,covariance, nstd):
+    ''' This function prints the 2d ellipse representing the covariance matrix.
+    
+        Input:
+            mean: 2d vector
+            covariance: covariance matrix
+            nstd: number of standard deviations which shall be included into the ellipse,
+                that is to say, the height and the width of the ellipse
+                
+        Author:
+            Till Rohrmann, till.rohrmann@campus.tu-berlin.de
+    '''
+    
+    # find axis of ellipse which are the eigenvectors with biggest eigenvalues
     values, vectors = np.linalg.eigh(covariance);
     
     ordering = np.argsort(values)[::-1];
     
+    # extract eigenvectors with biggest eigenvalues, the eigenvalues denote the variance
+    # in the direction of the eigenvector
     values = values[ordering[:2]];
     vectors = vectors[:,ordering[:2]];
     
+    # caculate the rotation angle of the ellipse
     theta = np.degrees(np.arctan2(vectors[1,0],vectors[0,0]));
     
     width, height = 2*nstd*np.sqrt(values);
@@ -463,7 +524,9 @@ def plot_ellipse(mean,covariance, nstd):
         
 
 def plot_em_solution(X, mu, sigma):
-    """ Plots covariance ellipses for EM MoG solution
+    """ Plots covariance ellipses for EM MoG solution and the data points.
+        The smaller ellipse denotes the area of a single standard deviation and
+        the bigger ellipse denotes the area of 2 times the standard deviation.
 
     Input:
     X: (d x n) data matrix with each datapoint in one column
@@ -480,18 +543,20 @@ def plot_em_solution(X, mu, sigma):
     plt.scatter(mu[0,:],mu[1,:],c='r',marker='x');
     
     for i in range(k):
-        plot_ellipse(mu[:,i],sigma[i],0.75)
-        plot_ellipse(mu[:,i],sigma[i],1.5)
+        plot_ellipse(mu[:,i],sigma[i],1)
+        plot_ellipse(mu[:,i],sigma[i],2)
     
 def kmean_loss(X,pi, mu, sigma):
-    ''' This function calculates the km loss function given the data
-        and the cluster means
+    ''' This function calculates the kmeans loss function for the solution
+        of the EM-algorithm. For this purpose the distance to each cluster
+        center weighted by the probability of membership is summed up for all
+        points.
         
         Input:
             X : (d x n) data matrix
-            pi : 
+            pi : probability distribution of the mixture components
             mu : (d x k) cluster mean matrix
-            sigma :
+            sigma : covariance matrices of the Gaussian clusters
         
         Output:
             loss function value
@@ -509,16 +574,6 @@ def kmean_loss(X,pi, mu, sigma):
     for i in range(k):
         gammas[:,i] = np.exp(gammas[:,i]-sGamma);
         
-    randomChoice = np.random.rand(n);
-    temp = np.zeros(n);
-    selection = np.zeros((n,k));
-    for i in range(k):
-        selection[:,i] = temp+gammas[:,i] < randomChoice;
-        temp += gammas[:,i];
-        
-    r = (selection.sum(axis=1)).astype(int);
-    return kmeans_crit(X,r);
-#     distanceMatrix = np.sqrt(((X[:,:,np.newaxis] - mu[:,np.newaxis,:])**2).sum(axis=0));
-#     r = np.argmin(distanceMatrix,axis=1);
-#     return kmeans_crit(X, r);
+    D = np.sqrt(((X[:,:,np.newaxis] - mu[:,np.newaxis,:])**2).sum(axis=0));
     
+    return np.sum(np.sum(D*gammas,axis=1));

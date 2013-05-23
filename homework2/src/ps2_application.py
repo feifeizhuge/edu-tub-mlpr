@@ -1,6 +1,7 @@
 import numpy as np;
 import pylab as pl;
 import ps2_implementation as imp;
+import matplotlib.cm as cm;
 
 
 def analyse5Gaussians():
@@ -10,7 +11,7 @@ def analyse5Gaussians():
     max_iter = 500;
     init_kmeans = False;
     
-    tries = 10;
+    tries = 30;
     n = data.shape[1];
     d = data.shape[0];
     
@@ -18,53 +19,64 @@ def analyse5Gaussians():
         kmMinError = np.Inf;
         kmMu = np.zeros((d,num));
         kmR = np.zeros(n);
+        totalIterations = 0;
+        totalTime = 0;
         for _ in range(tries):
-            mu, r = imp.kmeans(data, num, max_iter);
+            mu, r, iterations, t = imp.kmeans(data, num, max_iter);
             error = imp.kmeans_crit(data, r);
-            
+              
+            totalIterations += iterations
+            totalTime += t
+              
             if(error < kmMinError):
                 kmMinError = error;
                 kmMu = mu;
                 kmR = r;
-                
+                  
         pl.figure();
         pl.scatter(data[0,:],data[1,:],23,kmR);
         pl.scatter(kmMu[0,:],kmMu[1,:],23,np.arange(num),marker='x');
         error = imp.kmeans_crit(data, kmR);
-        pl.title('Cluster:' + str(num) + " Error:" + str(error));
+        strTime = '%.2E' % (totalTime/totalIterations);
+        pl.title('Cluster:' + str(num) + " Error:" + ('%.2f' %error)  + " Avg it:" + ('%.2f' % (float(totalIterations)/tries)) + " Time per it:" +
+                  strTime);
         pl.show(block=False);
-        
+         
         emLL = -np.Inf;
         emMu = np.zeros((d,num));
         emSigma = np.zeros((num,d,d));
         emPi = np.zeros(num);
         totalIterations = 0;
-        
+        totalTime = 0;
+         
         for _ in range(tries):
-            pi, mu, sigma,iterations = imp.em_mog(data,num,max_iter,init_kmeans);
-            
+            pi, mu, sigma,iterations, t = imp.em_mog(data,num,max_iter,init_kmeans);
+             
             totalIterations += iterations
-            
+            totalTime += t;
+             
             ll = imp.log_likelihood(data, pi, mu, sigma);
-            
+             
             if ll > emLL:
                 emLL = ll;
                 emMu = mu;
                 emSigma = sigma;
                 emPi = pi;
-        
+         
         pl.figure();
         imp.plot_em_solution(data, emMu, emSigma);
         error = imp.kmean_loss(data,emPi, emMu, emSigma);
-        pl.title('Cluster:' + str(num) + " Error:" + str(error) + " Avg iterations:" + str(float(totalIterations)/tries));
-        
+        strTime = '%.2E' % (totalTime/totalIterations);
+        pl.title('Cluster:' + str(num) + " Error:" + ( '%.2f'%error)+ " Avg it:" +('%.2f' %( float(totalIterations)/tries)) +
+                 " Time per it:" +strTime);
+         
         pl.show(block=False);
-    
+     
     pl.figure();
     
     kmMinError = np.Inf;
     for _ in range(tries):
-        _, r = imp.kmeans(data, max(numClusters), max_iter);
+        _, r, _, _ = imp.kmeans(data, max(numClusters), max_iter);
         error = imp.kmeans_crit(data, r);
         
         if(error < kmMinError):
@@ -73,6 +85,8 @@ def analyse5Gaussians():
             
     _,kmloss, mergeidx = imp.kmeans_agglo(data, kmR);
     imp.agglo_dendro(kmloss, mergeidx)
+    pl.title('Dendrogram');
+    pl.ylabel('Error');
     pl.show();
     
 def analyse2Gaussians():
@@ -82,14 +96,20 @@ def analyse2Gaussians():
     n = data.shape[1];
     max_iter =500;
     init_kmeans = True;
-    tries = 10;
+    tries = 40;
     minKMError = np.Inf;
     maxEMLL = -np.Inf;
     minMu = np.zeros((d,num));
     minR = np.zeros(n);
     
+    totalIterations = 0;
+    totalTime = 0;
+    
     for _ in range(tries):
-        mu, r = imp.kmeans(data,num,max_iter);
+        mu, r, iterations, t = imp.kmeans(data,num,max_iter);
+        
+        totalIterations += iterations;
+        totalTime += t;
         
         error = imp.kmeans_crit(data, r);
         
@@ -102,13 +122,20 @@ def analyse2Gaussians():
     pl.figure();
     pl.scatter(data[0,:],data[1,:],23,minR);
     pl.scatter(minMu[0,:],minMu[1,:],23,np.arange(num),marker='x');
-    pl.title('Kmean error:' + str(minKMError));
+    strTime = '%.2E' % (totalTime/totalIterations);
+    pl.title('Kmean error:' + str(minKMError)+ " Avg it:" + ('%.2f' % (float(totalIterations)/tries)) + 
+             " Time per it:" + strTime);
     maxMu = np.zeros((d,num));
     maxSigma = np.zeros((num,d,d));
     maxPi = np.zeros(num);
     
+    totalIterations = 0;
+    totalTime = 0;
     for _ in range(tries):    
-        pi, mu, sigma = imp.log_em_mog(data,num,max_iter,init_kmeans);
+        pi, mu, sigma, iterations, t = imp.em_mog(data,num,max_iter,init_kmeans);
+        
+        totalIterations += iterations;
+        totalTime += t;
         
         ll = imp.log_likelihood(data, pi, mu, sigma);
         
@@ -123,7 +150,8 @@ def analyse2Gaussians():
     pl.figure();
     
     imp.plot_em_solution(data, maxMu, maxSigma);
-    pl.title('EM error:' + str(imp.kmean_loss(data, maxPi, maxMu, maxSigma)))
+    pl.title('EM error:' + str(imp.kmean_loss(data, maxPi, maxMu, maxSigma))+ " Avg it:" + ('%.2f'% (float(totalIterations)/tries))
+             + " Time per it:" + ('%.2E' % (totalTime/totalIterations)));
     pl.show();
     
 def analyseUSPS():
@@ -136,7 +164,7 @@ def analyseUSPS():
     kmMax_iter = 500;
     emMax_iter = 100;
     k = 10;
-    tries = 10;
+    tries = 20;
     minKMError = np.Inf;
     maxEMLL = -np.Inf;
     init_kmeans = False;
@@ -147,33 +175,46 @@ def analyseUSPS():
     emSigma = np.zeros((k,d,d));
     emPi = np.zeros(k);
      
+    totalIterationsKM = 0;
+    totalTimeKM = 0;
     for _ in range(tries):
-        mu,r = imp.kmeans(data, k, kmMax_iter);
-          
+        mu,r, iterations, t = imp.kmeans(data, k, kmMax_iter);
+         
+        totalIterationsKM += iterations;
+        totalTimeKM += t;
+           
         error = imp.kmeans_crit(data, r);
-          
+           
         if error < minKMError:
             minKMError = error;
             kmMu = mu;
             #kmR = r;
             
+    totalIterationsEM = 0;
+    totalTimeEM = 0;
     for _ in range(tries):
-        pi,mu,sigma = imp.log_em_mog(data, k, emMax_iter, init_kmeans);
+        pi,mu,sigma, iterations, t = imp.log_em_mog(data, k, emMax_iter, init_kmeans);
          
+        totalIterationsEM += iterations;
+        totalTimeEM += t;
+          
         ll = imp.log_log_likelihood(data, pi, mu, sigma);
-         
+          
         if ll > maxEMLL:
             maxEMLL = ll;
             emMu = mu;
             emPi = pi
             emSigma = sigma;
-             
-    print('KM error:' + str(minKMError) + ' EM error:' +str(imp.kmean_loss(data,emPi,emMu,emSigma)));
+              
+    print('KM error:' + str(minKMError) + ' KM avg it:' + ('%.2f'% (float(totalIterationsKM)/tries)) 
+          + ' KM time per it:'+ ('%.2E' % (totalTimeKM/tries))+ ' EM error:' +str(imp.kmean_loss(data,emPi,emMu,emSigma))
+          + ' EM avg it:' + ('%.2f'% (float(totalIterationsEM)/tries)) 
+          + ' EM time per it:'+ ('%.2E' % (totalTimeEM/tries)));
      
     pl.figure();
     for i in range(10):
         pl.subplot(3,4,i);
-        pl.imshow(kmMu[:,i].reshape(16,16));
+        pl.imshow(kmMu[:,i].reshape(16,16), cmap=cm.Greys);
         pl.axis('off');
         
     pl.suptitle('KMeans');
@@ -181,7 +222,7 @@ def analyseUSPS():
     pl.figure();
     for i in range(10):
         pl.subplot(3,4,i);
-        pl.imshow(emMu[:,i].reshape(16,16));
+        pl.imshow(emMu[:,i].reshape(16,16), cmap=cm.Greys);
         pl.axis('off');
         
     pl.suptitle('EM');
@@ -196,12 +237,12 @@ def dendrogramUSPS():
     n = data.shape[1]; 
     k = 10;
     max_iter = 100;
-    tries = 10;
+    tries = 20;
     kmMinError = np.Inf;
     kmR = np.zeros(n);
     
     for i in range(tries):
-        _,r = imp.kmeans(data, k, max_iter);
+        _,r,_,_ = imp.kmeans(data, k, max_iter);
         
         error = imp.kmeans_crit(data, r);
         
@@ -211,6 +252,7 @@ def dendrogramUSPS():
     
     R, kmloss, mergeidx = imp.kmeans_agglo(data, kmR);
     imp.agglo_dendro(kmloss, mergeidx);
+    pl.ylabel('Error');
     
     m = np.ceil(np.sqrt(k));
     n = np.ceil(float(k)/m);
@@ -221,7 +263,7 @@ def dendrogramUSPS():
         if (R[0,:] == j).sum() > 0:
             mu = data[:,R[0,:]==j].sum(axis=1)/(R[0,:]==j).sum();
             pl.subplot(m,n,counter);
-            pl.imshow(mu.reshape(16,16));
+            pl.imshow(mu.reshape(16,16), cmap=cm.Greys);
             counter += 1;
             pl.axis('off');
     pl.suptitle('All centroids');
@@ -233,17 +275,17 @@ def dendrogramUSPS():
         newMu = (data[:,R[i-1,:]==mergeidx[i-1,0]].sum(axis=1) + data[:,R[i-1,:]==mergeidx[i-1,1]].sum(axis=1))/((R[i-1,:]==mergeidx[i-1,0]).sum()+ (R[i-1,:]==mergeidx[i-1,1]).sum()) ;
         pl.figure();
         pl.subplot(1,3,1);
-        pl.imshow(leftMu.reshape(16,16));
+        pl.imshow(leftMu.reshape(16,16), cmap=cm.Greys);
         pl.axis('off');
-        pl.title('Left cluster centroid');
+        pl.title('Left cluster');
         pl.subplot(1,3,2);
-        pl.imshow(rightMu.reshape(16,16));
+        pl.imshow(rightMu.reshape(16,16), cmap=cm.Greys);
         pl.axis('off');
-        pl.title('Right cluster centroid');
+        pl.title('Right cluster');
         pl.subplot(1,3,3);
-        pl.imshow(newMu.reshape(16,16));
+        pl.imshow(newMu.reshape(16,16), cmap = cm.Greys);
         pl.axis('off');
-        pl.title('Merged cluster centroid');
+        pl.title('Merged cluster');
         pl.suptitle('Merge:'+str(i));
         
     pl.show();

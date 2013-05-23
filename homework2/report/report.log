@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.4.9)  3 MAY 2013 10:03
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.4.9)  23 MAY 2013 23:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -113,6 +113,13 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 LaTeX Info: Redefining \[ on input line 2666.
 LaTeX Info: Redefining \] on input line 2667.
 )
+(/usr/share/texlive/texmf-dist/tex/latex/bbm-macros/bbm.sty
+Package: bbm 1999/03/15 V 1.2 provides fonts for set symbols - TH
+LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
+(Font)                  U/bbm/m/n --> U/bbm/bx/n on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathbbmss' in version `bold'
+(Font)                  U/bbmss/m/n --> U/bbmss/bx/n on input line 35.
+)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
@@ -182,18 +189,18 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 ) (./report.aux)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -293,24 +300,324 @@ Package caption Info: End \AtBeginDocument code.
 
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [1] (./report.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+
+LaTeX Warning: Reference `part:appliation' on page 1 undefined on input line 35
+.
+
+
+Overfull \hbox (3.5112pt too wide) in paragraph at lines 41--47
+\OT1/cmr/m/n/12 One prob-lem I en-coun-tered while im-ple-ment-ing the hi-er-ar
+-chi-cal clus-ter-ing was that the \OT1/cmtt/m/n/12 mergeidx
+ []
+
+
+Overfull \hbox (10.59563pt too wide) in paragraph at lines 41--47
+\OT1/cmr/m/n/12 re-turn value of \OT1/cmtt/m/n/12 kmeans[]agglo \OT1/cmr/m/n/12
+ did not work prop-erly with the func-tion \OT1/cmtt/m/n/12 scipy.cluster.hiera
+rchy
+ []
+
+LaTeX Font Info:    Try loading font information for U+bbm on input line 54.
+(/usr/share/texlive/texmf-dist/tex/latex/bbm-macros/ubbm.fd
+File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
+) [1]
+<images/5gaussians.png, id=19, 586.8324pt x 442.2924pt>
+File: images/5gaussians.png Graphic file (type png)
+
+<use images/5gaussians.png>
+Package pdftex.def Info: images/5gaussians.png used on input line 87.
+(pdftex.def)             Requested size: 341.43306pt x 257.33963pt.
+ [2 <./images/5gaussians.png>]
+<images/km2.png, id=25, 586.8324pt x 442.2924pt>
+File: images/km2.png Graphic file (type png)
+ <use images/km2.png>
+Package pdftex.def Info: images/km2.png used on input line 113.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/em2.png, id=26, 586.8324pt x 442.2924pt>
+File: images/em2.png Graphic file (type png)
+ <use images/em2.png>
+Package pdftex.def Info: images/em2.png used on input line 114.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/em2km.png, id=27, 586.8324pt x 442.2924pt>
+File: images/em2km.png Graphic file (type png)
+ <use images/em2km.png>
+Package pdftex.def Info: images/em2km.png used on input line 115.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+Overfull \hbox (28.4527pt too wide) in paragraph at lines 113--115
+ [][][][] 
+ []
+
+<images/km4.png, id=28, 586.8324pt x 442.2924pt>
+File: images/km4.png Graphic file (type png)
+ <use images/km4.png>
+Package pdftex.def Info: images/km4.png used on input line 116.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/em4.png, id=29, 586.8324pt x 442.2924pt>
+File: images/em4.png Graphic file (type png)
+ <use images/em4.png>
+Package pdftex.def Info: images/em4.png used on input line 117.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/em4km.png, id=30, 586.8324pt x 442.2924pt>
+File: images/em4km.png Graphic file (type png)
+ <use images/em4km.png>
+Package pdftex.def Info: images/em4km.png used on input line 118.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+Overfull \hbox (28.4527pt too wide) in paragraph at lines 116--118
+ [][][][] 
+ []
+
+<images/km5.png, id=31, 586.8324pt x 442.2924pt>
+File: images/km5.png Graphic file (type png)
+ <use images/km5.png>
+Package pdftex.def Info: images/km5.png used on input line 119.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/em5.png, id=32, 586.8324pt x 442.2924pt>
+File: images/em5.png Graphic file (type png)
+ <use images/em5.png>
+Package pdftex.def Info: images/em5.png used on input line 120.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/em5km.png, id=33, 586.8324pt x 442.2924pt>
+File: images/em5km.png Graphic file (type png)
+ <use images/em5km.png>
+Package pdftex.def Info: images/em5km.png used on input line 121.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+Overfull \hbox (28.4527pt too wide) in paragraph at lines 119--121
+ [][][][] 
+ []
+
+<images/km7.png, id=34, 586.8324pt x 442.2924pt>
+File: images/km7.png Graphic file (type png)
+ <use images/km7.png>
+Package pdftex.def Info: images/km7.png used on input line 122.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/em7.png, id=35, 586.8324pt x 442.2924pt>
+File: images/em7.png Graphic file (type png)
+ <use images/em7.png>
+Package pdftex.def Info: images/em7.png used on input line 123.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/em7km.png, id=36, 586.8324pt x 442.2924pt>
+File: images/em7km.png Graphic file (type png)
+ <use images/em7km.png>
+Package pdftex.def Info: images/em7km.png used on input line 124.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+Overfull \hbox (28.4527pt too wide) in paragraph at lines 122--125
+ [][][][] 
+ []
+
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 129.
+
+Overfull \hbox (16.7006pt too wide) in paragraph at lines 131--138
+\OT1/cmr/m/n/12 In Fig-ure 2[] one can see a se-lec-tion of clus-ter-ing re-sul
+ts of the al-go-rithms \OT1/cmtt/m/n/12 k-means \OT1/cmr/m/n/12 and \OT1/cmtt/m
+/n/12 EM-algorithm
+ []
+
+<images/5gaussiansError.png, id=37, 586.8324pt x 442.2924pt>
+File: images/5gaussiansError.png Graphic file (type png)
+
+<use images/5gaussiansError.png>
+Package pdftex.def Info: images/5gaussiansError.png used on input line 143.
+(pdftex.def)             Requested size: 227.62204pt x 171.55525pt.
+
+<images/5gaussiansIterations.png, id=38, 586.8324pt x 442.2924pt>
+File: images/5gaussiansIterations.png Graphic file (type png)
+
+<use images/5gaussiansIterations.png>
+Package pdftex.def Info: images/5gaussiansIterations.png used on input line 150
+.
+(pdftex.def)             Requested size: 227.62204pt x 171.55525pt.
+
+<images/5gaussiansTime.png, id=39, 586.8324pt x 442.2924pt>
+File: images/5gaussiansTime.png Graphic file (type png)
+
+<use images/5gaussiansTime.png>
+Package pdftex.def Info: images/5gaussiansTime.png used on input line 157.
+(pdftex.def)             Requested size: 227.62204pt x 171.55525pt.
+ [3] [4 <./images/km2.png> <./images/em2.png> <./images/em2km.png> <./images/km
+4.png> <./images/em4.png> <./images/em4km.png> <./images/km5.png> <./images/em5
+.png> <./images/em5km.png> <./images/km7.png> <./images/em7.png> <./images/em7k
+m.png>] [5 <./images/5gaussiansError.png> <./images/5gaussiansIterations.png> <
+./images/5gaussiansTime.png>]
+<images/dendrogram5Gaussians.png, id=65, 586.8324pt x 442.2924pt>
+File: images/dendrogram5Gaussians.png Graphic file (type png)
+
+<use images/dendrogram5Gaussians.png>
+Package pdftex.def Info: images/dendrogram5Gaussians.png used on input line 188
+.
+(pdftex.def)             Requested size: 227.62204pt x 171.55525pt.
+
+<images/scatter2Gaussians.png, id=66, 586.8324pt x 442.2924pt>
+File: images/scatter2Gaussians.png Graphic file (type png)
+
+<use images/scatter2Gaussians.png>
+Package pdftex.def Info: images/scatter2Gaussians.png used on input line 210.
+(pdftex.def)             Requested size: 284.52756pt x 214.45082pt.
+
+<images/2gKM.png, id=67, 586.8324pt x 442.2924pt>
+File: images/2gKM.png Graphic file (type png)
+ <use images/2gKM.png>
+Package pdftex.def Info: images/2gKM.png used on input line 217.
+(pdftex.def)             Requested size: 227.62204pt x 171.55525pt.
+
+<images/2gEM.png, id=68, 586.8324pt x 442.2924pt>
+File: images/2gEM.png Graphic file (type png)
+ <use images/2gEM.png>
+Package pdftex.def Info: images/2gEM.png used on input line 219.
+(pdftex.def)             Requested size: 227.62204pt x 171.55525pt.
+
+<images/2gEMkm.png, id=69, 586.8324pt x 442.2924pt>
+File: images/2gEMkm.png Graphic file (type png)
+ <use images/2gEMkm.png>
+Package pdftex.def Info: images/2gEMkm.png used on input line 221.
+(pdftex.def)             Requested size: 227.62204pt x 171.55525pt.
+
+[6 <./images/dendrogram5Gaussians.png>]
+<images/uspsKM.png, id=75, 586.8324pt x 442.2924pt>
+File: images/uspsKM.png Graphic file (type png)
+ <use images/uspsKM.png>
+Package pdftex.def Info: images/uspsKM.png used on input line 248.
+(pdftex.def)             Requested size: 227.62204pt x 171.55525pt.
+
+<images/uspsEM.png, id=76, 586.8324pt x 442.2924pt>
+File: images/uspsEM.png Graphic file (type png)
+ <use images/uspsEM.png>
+Package pdftex.def Info: images/uspsEM.png used on input line 250.
+(pdftex.def)             Requested size: 227.62204pt x 171.55525pt.
+
+<images/uspsEMkm.png, id=77, 586.8324pt x 442.2924pt>
+File: images/uspsEMkm.png Graphic file (type png)
+
+<use images/uspsEMkm.png>
+Package pdftex.def Info: images/uspsEMkm.png used on input line 252.
+(pdftex.def)             Requested size: 227.62204pt x 171.55525pt.
+
+<images/uspsdendrogram.png, id=78, 586.8324pt x 442.2924pt>
+File: images/uspsdendrogram.png Graphic file (type png)
+
+<use images/uspsdendrogram.png>
+Package pdftex.def Info: images/uspsdendrogram.png used on input line 270.
+(pdftex.def)             Requested size: 341.43306pt x 257.33963pt.
+
+<images/allcentroids.png, id=79, 586.8324pt x 442.2924pt>
+File: images/allcentroids.png Graphic file (type png)
+
+<use images/allcentroids.png>
+Package pdftex.def Info: images/allcentroids.png used on input line 277.
+(pdftex.def)             Requested size: 341.43306pt x 257.33963pt.
+ [7 <./images/scatter2Gaussians.png>] [8 <./images/2gKM.png> <./images/2gEM.png
+> <./images/2gEMkm.png>] [9 <./images/uspsKM.png> <./images/uspsEM.png> <./imag
+es/uspsEMkm.png>] [10 <./images/uspsdendrogram.png> <./images/allcentroids.png>
+]
+<images/1merge.png, id=102, 586.8324pt x 442.2924pt>
+File: images/1merge.png Graphic file (type png)
+ <use images/1merge.png>
+Package pdftex.def Info: images/1merge.png used on input line 290.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/2merge.png, id=103, 586.8324pt x 442.2924pt>
+File: images/2merge.png Graphic file (type png)
+ <use images/2merge.png>
+Package pdftex.def Info: images/2merge.png used on input line 291.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/3merge.png, id=104, 586.8324pt x 442.2924pt>
+File: images/3merge.png Graphic file (type png)
+ <use images/3merge.png>
+Package pdftex.def Info: images/3merge.png used on input line 292.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+Overfull \hbox (28.4527pt too wide) in paragraph at lines 290--293
+ [][][][] 
+ []
+
+<images/4merge.png, id=105, 586.8324pt x 442.2924pt>
+File: images/4merge.png Graphic file (type png)
+ <use images/4merge.png>
+Package pdftex.def Info: images/4merge.png used on input line 294.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/5merge.png, id=106, 586.8324pt x 442.2924pt>
+File: images/5merge.png Graphic file (type png)
+ <use images/5merge.png>
+Package pdftex.def Info: images/5merge.png used on input line 295.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/6merge.png, id=107, 586.8324pt x 442.2924pt>
+File: images/6merge.png Graphic file (type png)
+ <use images/6merge.png>
+Package pdftex.def Info: images/6merge.png used on input line 296.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+Overfull \hbox (28.4527pt too wide) in paragraph at lines 294--297
+ [][][][] 
+ []
+
+<images/7merge.png, id=108, 586.8324pt x 442.2924pt>
+File: images/7merge.png Graphic file (type png)
+ <use images/7merge.png>
+Package pdftex.def Info: images/7merge.png used on input line 298.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/8merge.png, id=109, 586.8324pt x 442.2924pt>
+File: images/8merge.png Graphic file (type png)
+ <use images/8merge.png>
+Package pdftex.def Info: images/8merge.png used on input line 299.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+<images/9merge.png, id=110, 586.8324pt x 442.2924pt>
+File: images/9merge.png Graphic file (type png)
+ <use images/9merge.png>
+Package pdftex.def Info: images/9merge.png used on input line 300.
+(pdftex.def)             Requested size: 170.71652pt x 128.66644pt.
+
+Overfull \hbox (28.4527pt too wide) in paragraph at lines 298--301
+ [][][][] 
+ []
+
+[11 <./images/1merge.png> <./images/2merge.png> <./images/3merge.png> <./images
+/4merge.png> <./images/5merge.png> <./images/6merge.png> <./images/7merge.png> 
+<./images/8merge.png> <./images/9merge.png>] (./report.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 3739 strings out of 495030
- 55828 string characters out of 3180762
- 120062 words of memory out of 3000000
- 6907 multiletter control sequences out of 15000+200000
- 6861 words of font info for 25 fonts, out of 3000000 for 9000
+ 4014 strings out of 495030
+ 61359 string characters out of 3180762
+ 130526 words of memory out of 3000000
+ 7127 multiletter control sequences out of 15000+200000
+ 11320 words of font info for 43 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 44i,6n,42p,237b,181s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/
-share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/
-texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on report.pdf (2 pages, 44494 bytes).
+ 44i,9n,46p,493b,384s stack positions out of 5000i,500n,10000p,200000b,50000s
+ </home/till/.texmf-var/fonts/pk/ljfour/public/bbm/bbm12.600pk></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on report.pdf (12 pages, 2711726 bytes).
 PDF statistics:
- 27 PDF objects out of 1000 (max. 8388607)
- 18 compressed objects within 1 object stream
+ 163 PDF objects out of 1000 (max. 8388607)
+ 66 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 176 words of extra memory for PDF output out of 10000 (max. 10000000)
 
