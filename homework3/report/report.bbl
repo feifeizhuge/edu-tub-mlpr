@@ -1,0 +1,46 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 1.7 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{Mueller13}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Mueller}{M.}%
+     {K.-R.}{K.-R.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{MKR1}
+  \strng{fullhash}{MKR1}
+  \field{sortinit}{M}
+  \field{howpublished}{University lecture in Machine Learning 2}
+  \field{note}{Slide 35}
+  \field{title}{Kernel Methods - Introduction to SVMs, KPCA, RDE}
+  \verb{url}
+  \verb https://www.isis.tu-berlin.de/mod/resource/view.php?id=340824
+  \endverb
+  \list{institution}{1}{%
+    {Technical University of Berlin}%
+  }
+  \field{month}{05}
+  \field{year}{2013}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput
