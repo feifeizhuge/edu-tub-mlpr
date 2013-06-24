@@ -117,7 +117,7 @@ If we don't have an explicit testing data set, then we have to apply cross-valid
 \part{Implementation}
 \label{part:implementation}
 
-\section{Cross-validation}
+\section*{Assignment 1: Cross-validation}
 
 The implementation of the \texttt{cv} method was straight forward and I basically implemented the version from the handbook.
 What it does is the following:
@@ -129,7 +129,7 @@ This accuracy measure is then summed up and the average of it is returned.
 Within the context of the implementation of \texttt{cv}, I did not encounter any serious problems.
 The details of the implementation can be found in file \texttt{ps3\_implementation.py}.
 
-\section{Kernel ridge regression}
+\section*{Assignment 2: Kernel ridge regression}
 
 The Kernel ridge regression is encapsulated by the method $\texttt{krr}$.
 I implemented it according to the specification found in the handbook.
@@ -165,7 +165,7 @@ The details of the mathematical derivation can be found in the handbook and the 
 \part{Application}
 \label{part:application}
 
-\section{Analytical and empirical ROC-Curve}
+\section*{Assignment 3: Analytical and empirical ROC-Curve}
 
 In this assignment we were supposed to calculate the empirical and analytical ROC curve for a two class data set obeying the following distributions:
 \begin{eqnarray*}
@@ -219,7 +219,7 @@ This is not surprisingly, because the higher the sample size is, the better is t
 	\label{fig:rocCurves}
 \end{figure}
 
-\section{Data set classification}
+\section*{Assignment 4: Data set classification}
 
 In this assignment we were supposed to apply the \texttt{cv} and the \texttt{krr} method on several data sets which are usually used in machine learning for benchmarking classification algorithms.
 The data sets with their dimensionalities and sample size are shown in table \ref{tab:datasets}.
@@ -238,6 +238,8 @@ We can clearly see that there are some data sets which can be well classified wi
 In order to argue that the found classifiers are quite good and the choice of the value intervals was right, one can observe that the found values don't lie at the borders of the value intervals.
 Furthermore, table \ref{tab:refs} compares reference classification errors using KRR for the data sets taken from a presentation held by Prof. M\"uller \cite{Mueller13} in the context of his lecture Machine Learning 2 with the obtained results.
 There we can see that the results are in good accordance with the reference results, indicating that the found classifiers cannot be much improved by choosing a different set of parameters.
+
+\setcounter{section}{4}
 
 \subsection{ROC curves and relation between classification error and AUC}
 
